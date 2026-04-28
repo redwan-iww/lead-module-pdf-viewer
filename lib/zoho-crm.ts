@@ -1,6 +1,5 @@
 import { getAccessToken } from './zoho-auth';
-
-const ZOHO_API_BASE = 'https://www.zohoapis.com/crm/v6';
+import { ZOHO_API_BASE } from './zoho-config';
 
 export interface ZohoFile {
   id: string;
