@@ -26,7 +26,9 @@ export default function PdfViewer({
     initialFiles?.files?.[0] || null
   );
   const [loading, setLoading] = useState(!initialFiles);
+  const [pdfLoading, setPdfLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [loadStartTime, setLoadStartTime] = useState<number | null>(null);
 
   useEffect(() => {
     if (!initialFiles) {
@@ -87,6 +89,8 @@ export default function PdfViewer({
           value={selectedFile?.id || ''}
           onChange={(e) => {
             const file = files.find((f) => f.id === e.target.value);
+            setPdfLoading(true);
+            setLoadStartTime(Date.now());
             setSelectedFile(file || null);
           }}
           className="border rounded px-3 py-2 min-w-[300px]"
@@ -107,11 +111,23 @@ export default function PdfViewer({
       </div>
 
       {pdfUrl && (
-        <iframe
-          src={pdfUrl}
-          className="w-full h-[800px] border rounded"
-          title="PDF Viewer"
-        />
+        <>
+          {pdfLoading && (
+            <div className="flex items-center justify-center h-[800px] border rounded bg-gray-50">
+              <div className="text-gray-500">Loading PDF...</div>
+            </div>
+          )}
+          <iframe
+            src={pdfUrl}
+            className={`w-full h-[800px] border rounded ${pdfLoading ? 'hidden' : ''}`}
+            title="PDF Viewer"
+            onLoad={() => {
+              const elapsed = Date.now() - (loadStartTime || 0);
+              const remaining = Math.max(0, 1000 - elapsed);
+              setTimeout(() => setPdfLoading(false), remaining);
+            }}
+          />
+        </>
       )}
     </div>
   );

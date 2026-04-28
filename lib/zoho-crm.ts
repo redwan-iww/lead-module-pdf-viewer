@@ -1,4 +1,4 @@
-import { getAccessToken } from './zoho-auth';
+import { getAccessToken, clearCachedToken } from './zoho-auth';
 import { ZOHO_API_BASE } from './zoho-config';
 
 export interface ZohoFile {
@@ -13,7 +13,10 @@ export interface LeadFiles {
   recordId: string;
 }
 
-export async function getLeadFiles(recordId: string): Promise<LeadFiles> {
+export async function getLeadFiles(
+  recordId: string,
+  retries = 2
+): Promise<LeadFiles> {
   const token = await getAccessToken();
 
   const response = await fetch(`${ZOHO_API_BASE}/Leads/${recordId}`, {
@@ -22,6 +25,12 @@ export async function getLeadFiles(recordId: string): Promise<LeadFiles> {
       'Content-Type': 'application/json',
     },
   });
+
+  if (response.status === 401 && retries > 0) {
+    clearCachedToken();
+    await getAccessToken();
+    return getLeadFiles(recordId, retries - 1);
+  }
 
   if (!response.ok) {
     throw new Error(`Failed to fetch lead: ${response.statusText}`);
@@ -42,7 +51,8 @@ export async function getLeadFiles(recordId: string): Promise<LeadFiles> {
 
 export async function downloadFile(
   recordId: string,
-  fileId: string
+  fileId: string,
+  retries = 2
 ): Promise<{ buffer: ArrayBuffer; fileName: string }> {
   const token = await getAccessToken();
 
@@ -54,6 +64,12 @@ export async function downloadFile(
       },
     }
   );
+
+  if (response.status === 401 && retries > 0) {
+    clearCachedToken();
+    await getAccessToken();
+    return downloadFile(recordId, fileId, retries - 1);
+  }
 
   if (!response.ok) {
     throw new Error(`Failed to download file: ${response.statusText}`);
