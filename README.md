@@ -10,7 +10,7 @@ npm install
 
 ## Environment Variables
 
-None required — Zoho API key is hardcoded in [lib/zoho-auth.ts](lib/zoho-auth.ts).
+None required — Zoho API key is hardcoded in [lib/zoho-config.ts](lib/zoho-config.ts).
 
 ## Development
 
