@@ -1,0 +1,18 @@
+{
+  "env": {
+    "ANTHROPIC_BASE_URL": "https://api.minimax.io/anthropic",
+    "ANTHROPIC_AUTH_TOKEN": "sk-cp-OO5I5POjMfxRpOiLD8bcWqWVScN1KOOwASlrm8-eKmwMNTKDnblvpbSCF340emEshf_0frAp7itatyQC0GMU2OtKa4t7dN546O3zWbv2YN9BH0I3T8xDX3U",
+    "ANTHROPIC_MODEL": "MiniMax-M2",
+    "ANTHROPIC_DEFAULT_SONNET_MODEL": "MiniMax-M2",
+    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "MiniMax-M2",
+    "API_TIMEOUT_MS": "600000",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Skill(update-config)",
+      "Skill(update-config:*)"
+    ],
+    "deny": []
+  }
+}
