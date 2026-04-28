@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { ZohoFile } from '@/lib/zoho-crm';
+import { useState, useEffect } from "react";
+import { ZohoFile } from "@/lib/zoho-crm";
 
 interface LeadFiles {
   files: ZohoFile[];
@@ -23,7 +23,7 @@ export default function PdfViewer({
 }) {
   const [files, setFiles] = useState<ZohoFile[]>(initialFiles?.files || []);
   const [selectedFile, setSelectedFile] = useState<ZohoFile | null>(
-    initialFiles?.files?.[0] || null
+    initialFiles?.files?.[0] || null,
   );
   const [loading, setLoading] = useState(!initialFiles);
   const [pdfLoading, setPdfLoading] = useState(false);
@@ -43,7 +43,7 @@ export default function PdfViewer({
           setLoading(false);
         })
         .catch((err) => {
-          console.error('Failed to fetch files:', err);
+          console.error("Failed to fetch files:", err);
           setLoading(false);
         });
     }
@@ -59,7 +59,10 @@ export default function PdfViewer({
 
   const handleDownload = () => {
     if (!selectedFile) return;
-    window.open(`/api/pdf/${recordId}/${selectedFile.id}?download=true`, '_blank');
+    window.open(
+      `/api/pdf/${recordId}/${selectedFile.id}?download=true`,
+      "_blank",
+    );
   };
 
   if (loading) {
@@ -86,7 +89,7 @@ export default function PdfViewer({
         </label>
         <select
           id="file-select"
-          value={selectedFile?.id || ''}
+          value={selectedFile?.id || ""}
           onChange={(e) => {
             const file = files.find((f) => f.id === e.target.value);
             setPdfLoading(true);
@@ -119,11 +122,11 @@ export default function PdfViewer({
           )}
           <iframe
             src={pdfUrl}
-            className={`w-full h-[800px] border rounded ${pdfLoading ? 'hidden' : ''}`}
+            className={`w-full h-[800px] border rounded ${pdfLoading ? "hidden" : ""}`}
             title="PDF Viewer"
             onLoad={() => {
               const elapsed = Date.now() - (loadStartTime || 0);
-              const remaining = Math.max(0, 1000 - elapsed);
+              const remaining = Math.max(0, 300 - elapsed);
               setTimeout(() => setPdfLoading(false), remaining);
             }}
           />
